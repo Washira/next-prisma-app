@@ -6,6 +6,20 @@ import Link from 'next/link'
 
 export default function Home() {
   const [posts, setPosts] = useState([])
+
+  useEffect(() => {
+    fetchPosts()
+  }, [])
+
+  const fetchPosts = async () => {
+    try {
+      const res = await axios.get('/api/posts')
+      setPosts(res.data)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-semibold mb-6">Blog Posts</h1>

@@ -89,3 +89,5 @@ const Edit = ({ params }: { params: { id: string }}) => {
     </div>
   )
 }
+
+export default Edit
