@@ -3,6 +3,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 - [Getting Started](#getting-started)
 - [Learn More](#learn-more)
 - [Deploy on Vercel](#deploy-on-vercel)
+- [Configuration](#configuration)
 - [Installation](#installation)
   - [Docker Compose](#docker-compose)
   - [Prisma](#prisma)
@@ -13,6 +14,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
   - [method ที่ใช้](#method-ที่ใช้)
     - [Static route](#static-route)
     - [Dynamic route](#dynamic-route)
+- [Frontend](#frontend)
 
 
 ## Getting Started
@@ -49,6 +51,21 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Configuration
+
+เมื่อสร้างโปรเจคใหม่ ให้ตอบคำถามตามนี้
+
+```
+What is your project named? … next-prisma-app
+✔ Would you like to use TypeScript? … Yes
+✔ Would you like to use ESLint? … No
+✔ Would you like to use Tailwind CSS? … Yes
+✔ Would you like to use `src/` directory? … No
+✔ Would you like to use App Router? (recommended) … Yes
+✔ Would you like to customize the default import alias (@/*)? … Yes
+✔ What import alias would you like configured? … @/*
+```
 
 ## Installation
 
@@ -125,3 +142,22 @@ api
 - `GET` `api/posts/:id` สำหรับดึงข้อมูลตาม id: สร้าง function `GET()`
 - `PUT` `api/posts/:id` สำหรับแก้ไขข้อมูลตาม id: สร้าง function `PUT()`
 - `DELETE` `api/posts/:id` สำหรับลบข้อมูลตาม id: สร้าง function `DELETE()`
+
+## Frontend
+
+Layout ของ Frontend จะประกอบไปด้วย
+
+```
+├── app
+    ├── api --> API จากส่วนก่อนหน้านี้
+    │   └── posts
+    │       ├── [id]
+    │       │   └── route.ts
+    │       └── route.ts
+    ├── create
+    │   └── page.tsx
+    ├── edit
+    │   └── [id]
+    │       └── page.tsx
+    └── page.tsx
+```
