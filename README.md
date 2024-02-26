@@ -154,6 +154,8 @@ Layout ของ Frontend จะประกอบไปด้วย
     │       ├── [id]
     │       │   └── route.ts
     │       └── route.ts
+    ├── components
+    │   └── PostForm.tsx
     ├── create
     │   └── page.tsx
     ├── edit
