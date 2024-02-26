@@ -6,6 +6,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 - [Installation](#installation)
   - [Docker Compose](#docker-compose)
   - [Prisma](#prisma)
+    - [ติดตั้ง Prisma ด้วย](#ติดตั้ง-prisma-ด้วย)
+    - [Setting](#setting)
+    - [สร้าง Migration](#สร้าง-migration)
 
 
 ## Getting Started
@@ -51,7 +54,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ### Prisma
 
-ติดตั้ง Prisma ด้วย
+#### ติดตั้ง Prisma ด้วย
 
 ```
 npm install prisma --save-dev
@@ -63,3 +66,21 @@ npm install @prisma/client
 ```
 npx prisma init
 ```
+
+#### Setting
+
+เปลี่ยน `DATABASE_URL` ใน `.env` ให้ตรงกับ username, password ของ database ของเรา
+
+#### สร้าง Migration
+
+Migration คือ version control ของ database
+
+สร้าง Migration สำหรับ database ด้วย
+
+```
+npx prisma migrate dev --name <ชื่อ migrate>
+```
+
+ยกตัวอย่าง เช่น `npx prisma migrate dev --name "Create Post Table"`
+
+จะได้ folder ที่เป็น migration ใน migrations folder ชื่อว่า `<time_stamp>_create_post_table` และ ไฟล์ `migration_lock.toml`
