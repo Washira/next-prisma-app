@@ -10,6 +10,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
     - [Setting](#setting)
     - [สร้าง Migration](#สร้าง-migration)
 - [Create APIs](#create-apis)
+  - [method ที่ใช้](#method-ที่ใช้)
+    - [Static route](#static-route)
+    - [Dynamic route](#dynamic-route)
 
 
 ## Getting Started
@@ -88,3 +91,37 @@ npx prisma migrate dev --name <ชื่อ migrate>
 
 ## Create APIs
 
+สร้าง APIs ด้วย Prisma Client ใน `api` folder
+
+Layout ของ APIs จะเป็นแบบนี้
+  
+```
+api
+├── posts
+│   ├── [id]
+│   │   └── route.ts
+│   └── route.ts
+└── users
+    ├── [id]
+    │   └── route.ts
+    └── route.ts
+```
+
+### method ที่ใช้
+
+แบ่งเป็น 2 แบบคือ Static route และ Dynamic route
+
+#### Static route
+
+ใน app สร้าง `api/posts/route.ts` เป็น folder สำหรับเก็บ APIs ที่เกี่ยวกับ Post
+
+- `GET` `api/posts` สำหรับดึงข้อมูล: สร้าง function `GET()`
+- `POST` `api/posts` สำหรับสร้างข้อมูล: สร้าง function `POST()`
+
+#### Dynamic route
+
+สร้าง folder `api/posts/[id]/routs.ts` สำหรับเก็บ APIs ที่เกี่ยวกับ Post ตาม id
+
+- `GET` `api/posts/:id` สำหรับดึงข้อมูลตาม id: สร้าง function `GET()`
+- `PUT` `api/posts/:id` สำหรับแก้ไขข้อมูลตาม id: สร้าง function `PUT()`
+- `DELETE` `api/posts/:id` สำหรับลบข้อมูลตาม id: สร้าง function `DELETE()`
