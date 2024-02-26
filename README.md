@@ -9,6 +9,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
     - [ติดตั้ง Prisma ด้วย](#ติดตั้ง-prisma-ด้วย)
     - [Setting](#setting)
     - [สร้าง Migration](#สร้าง-migration)
+- [Create APIs](#create-apis)
 
 
 ## Getting Started
@@ -83,4 +84,7 @@ npx prisma migrate dev --name <ชื่อ migrate>
 
 ยกตัวอย่าง เช่น `npx prisma migrate dev --name "Create Post Table"`
 
-จะได้ folder ที่เป็น migration ใน migrations folder ชื่อว่า `<time_stamp>_create_post_table` และ ไฟล์ `migration_lock.toml`
+จะได้ folder ที่เป็น migration ใน `prisma/migrations` folder ชื่อว่า `<time_stamp>_create_post_table` และ ไฟล์ `migration_lock.toml`
+
+## Create APIs
+
