@@ -15,6 +15,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
     - [Static route](#static-route)
     - [Dynamic route](#dynamic-route)
 - [Frontend](#frontend)
+- [ปรับ APIs เพื่อให้ Search และ Filter ได้](#ปรับ-apis-เพื่อให้-search-และ-filter-ได้)
+  - [ใช้ `NextRequest` ในการรับค่าจาก query string](#ใช้-nextrequest-ในการรับค่าจาก-query-string)
 
 
 ## Getting Started
@@ -172,3 +174,30 @@ Layout ของ Frontend จะประกอบไปด้วย
 - `app/edit/[id]/page.tsx` คือ page สำหรับแก้ไขข้อมูล ตาม id
 - `app/page.tsx` สำหรับเก็บ page หลัก
 
+## ปรับ APIs เพื่อให้ Search และ Filter ได้
+
+เพิ่ม function สำหรับ search และ filter ใน `api/posts/route.ts`
+
+### ใช้ `NextRequest` ในการรับค่าจาก query string
+
+ใช้ `NextRequest` ที่เป็น interface ในการรับค่าจาก query string
+
+```ts
+import { NextRequest } from 'next/server'
+
+export default async function GET(req: NextRequest) {
+  const searchParams = request.nextUrl.searchParams
+  const search = searchParams.get('search') // ทำการรับ search จาก query string
+  const filter = searchParams.get('filter')
+  // ทำการ filter ข้อมูลตาม search และ filter
+  const posts = await prisma.post.findMany({
+    where: {
+      title: {
+        contains: search, // ค้นหา post ที่มี search เป็น substring ใน title
+        mode: 'insensitive', // ไม่สนใจตัวเล็กตัวใหญ่
+      },
+    }
+  })
+  return posts
+}
+```
