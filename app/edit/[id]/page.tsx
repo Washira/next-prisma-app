@@ -49,6 +49,7 @@ const Edit = ({ params }: { params: { id: string }}) => {
         content={content}
         setContent={setContent}
         handleSubmit={handleSubmit}
+        buttonText="Update"
       />
     </div>
   )
