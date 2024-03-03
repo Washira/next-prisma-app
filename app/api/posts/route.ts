@@ -23,5 +23,3 @@ export async function POST(request: Request) {
   // ส่งข้อมูลกลับไปให้ผู้ใช้
   return Response.json(newPost)
 }
-
-// function PUT

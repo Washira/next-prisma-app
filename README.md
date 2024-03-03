@@ -163,3 +163,12 @@ Layout ของ Frontend จะประกอบไปด้วย
     │       └── page.tsx
     └── page.tsx
 ```
+
+- `app/components` สำหรับเก็บ component ที่ใช้ซ้ำ
+- `app/components/PostForm.tsx` สำหรับเก็บ form สำหรับสร้างและแก้ไขข้อมูล
+- `app/create` คือ page สำหรับสร้างข้อมูล
+- `app/create/page.tsx` สำหรับเก็บ page สำหรับสร้างข้อมูล
+- `app/edit` คือ page สำหรับแก้ไขข้อมูล
+- `app/edit/[id]/page.tsx` คือ page สำหรับแก้ไขข้อมูล ตาม id
+- `app/page.tsx` สำหรับเก็บ page หลัก
+
