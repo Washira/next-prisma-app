@@ -45,6 +45,7 @@ export async function PUT(
 
 // function DELETE
 export async function DELETE(
+  request: Request,
   { params }: { params: { id: string } }
 ) {
   try {

@@ -1,5 +1,3 @@
-
-
 const PostForm = (
   { title, setTitle, content, setContent, handleSubmit, buttonText }
   : {

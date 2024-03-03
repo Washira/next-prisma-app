@@ -3,9 +3,19 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 // create confirm delete modal component
-const ConfirmDelete = ({ id, deletePost }: { id: number, deletePost: (id: number) => void }) => {
+const ConfirmDelete = ({
+  id,
+  deletePost,
+  setShowModal,
+}: {
+  id: number | null,
+  deletePost: (id: number | null) => void,
+  setShowModal: (showModal: boolean) => void,
+}) => {
+  const router = useRouter()
   return (
     <div className="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
       <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -31,16 +41,20 @@ const ConfirmDelete = ({ id, deletePost }: { id: number, deletePost: (id: number
               </div>
             </div>
           </div>
-          <div className="bg-gray-50 px-4 py-3 sm:px-6 sm
-          :flex sm:flex-row-reverse">
+          <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse sm:justify-end">
             <button
-              onClick={() => deletePost(id)}
+              onClick={() => {
+                deletePost(id)
+                setShowModal(false)
+                router.push('/')
+              }}
               type="button"
               className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
             >
               Delete
             </button>
             <button
+              onClick={() => setShowModal(false)}
               type="button"
               className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
             >
@@ -55,10 +69,8 @@ const ConfirmDelete = ({ id, deletePost }: { id: number, deletePost: (id: number
 
 export default function Home() {
   const [posts, setPosts] = useState([])
-
-  useEffect(() => {
-    fetchPosts()
-  }, [])
+  const [showModal, setShowModal] = useState(false)
+  const [postId, setPostId] = useState(null)
 
   const fetchPosts = async () => {
     try {
@@ -68,6 +80,20 @@ export default function Home() {
       console.error(error)
     }
   }
+
+  const deletePost = async (id: Number| null) => {
+    try {
+      if (!id || id === null) return
+      await axios.delete(`/api/posts/${id}`)
+      fetchPosts()
+    } catch (error) {
+      console.error('Failed to delete the post', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchPosts()
+  }, [])
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
@@ -106,7 +132,11 @@ export default function Home() {
                     Edit
                   </Link>
                   <button
-                    // onClick={() => deletePost(post.id)}
+                    onClick={() => {
+                      // deletePost(post.id)
+                      setPostId(post.id)
+                      setShowModal(true)
+                    }}
                     className="text-red-600 hover:text-red-900"
                   >
                     Delete
@@ -123,6 +153,9 @@ export default function Home() {
       >
         Create a New Post
       </Link>
+      {showModal ? (
+        <ConfirmDelete id={postId} deletePost={deletePost} setShowModal={setShowModal} />
+      ) : null}
     </div>
   )
 }
