@@ -10,6 +10,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
     - [ติดตั้ง Prisma ด้วย](#ติดตั้ง-prisma-ด้วย)
     - [Setting](#setting)
     - [สร้าง Migration](#สร้าง-migration)
+    - [เพิ่ม Migration ใหม่](#เพิ่ม-migration-ใหม่)
 - [Create APIs](#create-apis)
   - [method ที่ใช้](#method-ที่ใช้)
     - [Static route](#static-route)
@@ -17,6 +18,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 - [Frontend](#frontend)
 - [ปรับ APIs เพื่อให้ Search และ Filter ได้](#ปรับ-apis-เพื่อให้-search-และ-filter-ได้)
   - [ใช้ `NextRequest` ในการรับค่าจาก query string](#ใช้-nextrequest-ในการรับค่าจาก-query-string)
+- [ทำ CRUD API ของ Category](#ทำ-crud-api-ของ-category)
 
 
 ## Getting Started
@@ -58,7 +60,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 เมื่อสร้างโปรเจคใหม่ ให้ตอบคำถามตามนี้
 
-```
+```bash
 What is your project named? … next-prisma-app
 ✔ Would you like to use TypeScript? … Yes
 ✔ Would you like to use ESLint? … No
@@ -79,14 +81,14 @@ What is your project named? … next-prisma-app
 
 #### ติดตั้ง Prisma ด้วย
 
-```
+```bash
 npm install prisma --save-dev
 npm install @prisma/client
 ```
 
 สร้างไฟล์เริ่มต้นของ Prisma
 
-```
+```bash
 npx prisma init
 ```
 
@@ -100,13 +102,59 @@ Migration คือ version control ของ database
 
 สร้าง Migration สำหรับ database ด้วย
 
-```
-npx prisma migrate dev --name <ชื่อ migrate>
+```bash
+npx prisma migrate dev --name <MIGRATE_NAME>
 ```
 
 ยกตัวอย่าง เช่น `npx prisma migrate dev --name "Create Post Table"`
 
 จะได้ folder ที่เป็น migration ใน `prisma/migrations` folder ชื่อว่า `<time_stamp>_create_post_table` และ ไฟล์ `migration_lock.toml`
+
+#### เพิ่ม Migration ใหม่
+
+มี 2 วิธีในการเพิ่ม migration ใหม่ คือ
+
+1. ถ้าต้องการเพิ่ม field ที่ไม่มี value ด้วย ให้เพิ่ม field ใน `schema.prisma` และสร้าง migration ใหม่ อาจจะให้ field นั้นเป็น `null` โดยการใส่ `?` หลังชื่อ field ใน `schema.prisma` เช่น
+
+```prisma
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String?
+  category string? // เพิ่ม field ใหม่ สามารถเป็น null ได้
+  createdAt DateTime @default(now())
+}
+```
+
+แล้วรันคำสั่ง `npx prisma migrate dev --name <MIGRATE_NAME>` อีกครั้ง
+
+2. ถ้าต้องการเพิ่ม field ที่มี value ด้วย ให้เพิ่ม field ใน `schema.prisma` และสร้าง migration ใหม่ ให้เพิ่ม `--create-only` ด้วย
+
+```bash
+npx prisma migrate dev --name <MIGRATE_NAME> --create-only
+```
+
+จะมีการถามให้ยืนยันการสร้าง migration
+
+```bash
+✔ Are you sure you want to create this migration? … yes
+```
+
+เนื่องจากเราใช้ `--create-only` จะไม่มีการสร้าง field ใหม่ใน database จริง ๆ แต่จะสร้าง migration ใหม่ใน `prisma/migrations` folder เท่านั้น ทำให้เราต้องรัน `npx prisma migrate dev` อีกครั้งเพื่อทำการสร้าง field ใหม่ใน database
+
+```bash
+npx prisma migrate dev
+```
+
+แต่จะมี error เพราะว่ามี field ที่ไม่มีค่าใน database ให้เราทำการเพิ่มค่าให้กับ field ที่เพิ่มใหม่ และรัน `npx prisma migrate dev` อีกครั้ง
+
+หลังจากนั่้น จะมีข้อความให้ยืนยันว่า เรายอมรับที่ข้อมูลจะถูกลบทั้งหมด
+
+```bash
+Do you want to continue? All data will be lost. … yes
+```
+
+จากนั้นจะมีการสร้าง migration ใหม่ และ field ใหม่จะถูกเพิ่มใน database
 
 ## Create APIs
 
@@ -200,4 +248,21 @@ export default async function GET(req: NextRequest) {
   })
   return posts
 }
+```
+
+## ทำ CRUD API ของ Category
+
+สร้าง APIs สำหรับ Category ใน `api/categories/route.ts`
+
+```
+├── app
+    ├── api
+        ├── categories --> ส่วนที่เพิ่มเข้ามา
+        │   ├── [id]
+        │   │   └── route.ts
+        │   └── route.ts
+        └── posts
+            ├── [id]
+            │   └── route.ts
+            └── route.ts
 ```

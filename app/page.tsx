@@ -17,6 +17,7 @@ export default function Home() {
 
   const fetchPosts = async () => {
     try {
+      // URLSearchParams is a built-in class to handle query strings from objects
       const query = new URLSearchParams({ category, search, sort }).toString()
       const res = await axios.get(`/api/posts?${query}`)
       setPosts(res.data)
