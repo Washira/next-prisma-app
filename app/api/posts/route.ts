@@ -26,24 +26,25 @@ export async function GET(request: NextRequest) {
     }
   }
   const posts = await prisma.post.findMany({
-    where: whereCondition as any,
-    // ใส่ any เพราะ where ไม่รองรับ type ที่เราสร้างให้ เราจึงใส่ any เพื่อให้ type ของ where ถูกกำหนดจากปลายทาง
+    where: whereCondition as any,   // ใส่ any เพราะ where ไม่รองรับ type ที่เราสร้างให้ เราจึงใส่ any เพื่อให้ type ของ where ถูกกำหนดจากปลายทาง
     orderBy: {
       createdAt: sort
-    } as any, 
-    // ใส่ any เพราะ orderBy ไม่รองรับการใส่ string โดยตรง เราจึงใส่ any เพื่อให้ type ถูกกำหนดจากปลายทาง
+    } as any,   // ใส่ any เพราะ orderBy ไม่รองรับการใส่ string โดยตรง เราจึงใส่ any เพื่อให้ type ถูกกำหนดจากปลายทาง
+    include: {
+      category: true
+    }  // ใส่ true เพื่อให้ดึงข้อมูล category มาด้วย
   })
   return Response.json(posts)
 }
 
 // function POST
 export async function POST(request: Request) {
-  const { title, content, category } = await request.json()
+  const { title, content, categoryId } = await request.json()
   const newPost = await prisma.post.create({
     data: {
       title,
       content,
-      category,
+      categoryId: Number(categoryId),
     }
   })
   // newPost คือข้อมูลที่เพิ่งสร้างขึ้น จะได้ id มาด้วย

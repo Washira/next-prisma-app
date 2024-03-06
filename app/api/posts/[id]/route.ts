@@ -12,6 +12,9 @@ export async function GET(
     const post = await prisma.post.findUnique({
       where: {
         id: postId
+      },
+      include: {
+        category: true
       }
     })
     return Response.json(post)
@@ -27,7 +30,7 @@ export async function PUT(
 ) {
   try {
     const postId = Number(params.id)
-    const { title, content, category } = await request.json()
+    const { title, content, categoryId } = await request.json()
     const updatedPost = await prisma.post.update({
       where: {
         id: postId
@@ -35,7 +38,7 @@ export async function PUT(
       data: {
         title,
         content,
-        category,
+        categoryId: Number(categoryId),
       }
     })
     return Response.json(updatedPost)
