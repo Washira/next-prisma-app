@@ -8,6 +8,7 @@ import PostForm from '@/app/components/PostForm'
 const Edit = ({ params }: { params: { id: string }}) => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+  const [category, setCategory] = useState('')
   const router = useRouter()
   const { id } = params
 
@@ -50,6 +51,8 @@ const Edit = ({ params }: { params: { id: string }}) => {
         setTitle={setTitle}
         content={content}
         setContent={setContent}
+        category={category}
+        setCategory={setCategory}
         handleSubmit={handleSubmit}
         buttonText="Update"
       />

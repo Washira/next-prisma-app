@@ -1,10 +1,21 @@
 const PostForm = (
-  { title, setTitle, content, setContent, handleSubmit, buttonText }
+  {
+    title,
+    setTitle,
+    content,
+    setContent,
+    category,
+    setCategory,
+    handleSubmit,
+    buttonText
+  }
   : {
     title: string,
     setTitle: (title: string) => void,
     content: string,
     setContent: (content: string) => void,
+    category: string,
+    setCategory: (category: string) => void,
     handleSubmit: (e: React.FormEvent) => void,
     buttonText: string
   }
@@ -25,7 +36,7 @@ const PostForm = (
             required
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm sm:text-lg"
           />
         </div>
         <div>
@@ -45,6 +56,19 @@ const PostForm = (
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           ></textarea>
         </div>
+        <div className="space-x-2">
+          <label>Category</label>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option value="">Select a category</option>
+            {/* Example static categories, replace or populate dynamically */}
+            <option value="Tech">Tech</option>
+            <option value="Lifestyle">Lifestyle</option>
+          </select>
+        </div>
+        <div></div>
         <div>
           <button
             type="submit"

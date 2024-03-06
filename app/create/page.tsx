@@ -8,13 +8,14 @@ import PostForm from '@/app/components/PostForm'
 const Create = () => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+  const [category, setCategory] = useState('')
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     try {
-      await axios.post('/api/posts', { title, content })
+      await axios.post('/api/posts', { title, content, category })
       router.push('/')
     } catch (error) {
       console.error(error)
@@ -29,6 +30,8 @@ const Create = () => {
         setTitle={setTitle}
         content={content}
         setContent={setContent}
+        category={category}
+        setCategory={setCategory}
         handleSubmit={handleSubmit}
         buttonText="Create"
       />
