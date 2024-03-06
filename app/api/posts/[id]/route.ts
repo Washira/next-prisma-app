@@ -27,14 +27,15 @@ export async function PUT(
 ) {
   try {
     const postId = Number(params.id)
-    const { title, content } = await request.json()
+    const { title, content, category } = await request.json()
     const updatedPost = await prisma.post.update({
       where: {
         id: postId
       },
       data: {
         title,
-        content
+        content,
+        category,
       }
     })
     return Response.json(updatedPost)

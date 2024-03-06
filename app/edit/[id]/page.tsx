@@ -17,6 +17,7 @@ const Edit = ({ params }: { params: { id: string }}) => {
       const res = await axios.get(`/api/posts/${id}`)
       setTitle(res.data.title)
       setContent(res.data.content)
+      setCategory(res.data.category)
     } catch (error) {
       console.error(error)
     }
@@ -35,10 +36,12 @@ const Edit = ({ params }: { params: { id: string }}) => {
       await axios.put(`/api/posts/${id}`, {
         title,
         content,
+        category,
       })
       router.push('/')
       setTitle('')
       setContent('')
+      setCategory('')
     } catch (error) {
       console.error(error)
     }

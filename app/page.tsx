@@ -72,6 +72,11 @@ export default function Home() {
   const [showModal, setShowModal] = useState(false)
   const [postId, setPostId] = useState(null)
 
+  // states for search, category, and sort
+  const [search, setSearch] = useState('')
+  const [category, setCategory] = useState('')
+  const [sort, setSort] = useState('desc')
+
   const fetchPosts = async () => {
     try {
       const res = await axios.get('/api/posts')
