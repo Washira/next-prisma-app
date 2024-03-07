@@ -14,7 +14,7 @@ export async function GET(
         id: postId
       },
       include: {
-        category: true
+        category: true // ใส่ true เพื่อให้ดึงข้อมูล category มาด้วย
       }
     })
     return Response.json(post)
@@ -34,6 +34,9 @@ export async function PUT(
     const updatedPost = await prisma.post.update({
       where: {
         id: postId
+      },
+      include: {
+        category: true
       },
       data: {
         title,
@@ -57,6 +60,9 @@ export async function DELETE(
     const deletedPost = await prisma.post.delete({
       where: {
         id: postId
+      },
+      include: {
+        category: true
       }
     })
     return Response.json(deletedPost)

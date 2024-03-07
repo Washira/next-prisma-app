@@ -8,7 +8,8 @@ import PostForm from '@/app/components/PostForm'
 const Edit = ({ params }: { params: { id: string }}) => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-  const [category, setCategory] = useState('')
+  const [categoryId, setCategoryId] = useState('')
+  const [categories, setCategories] = useState([])
   const router = useRouter()
   const { id } = params
 
@@ -17,17 +18,20 @@ const Edit = ({ params }: { params: { id: string }}) => {
       const res = await axios.get(`/api/posts/${id}`)
       setTitle(res.data.title)
       setContent(res.data.content)
-      setCategory(res.data.category)
+      setCategoryId(res.data.categoryId)
     } catch (error) {
       console.error(error)
     }
   }, [])
 
-  useEffect(() => {
-    if (id) {
-      fetchPost(parseInt(id))
+  const fetchCategories = async () => {
+    try {
+      const res = await axios.get('/api/categories')
+      setCategories(res.data)
+    } catch (error) {
+      console.error('Failed to fetch categories', error)
     }
-  }, [id])
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -36,16 +40,24 @@ const Edit = ({ params }: { params: { id: string }}) => {
       await axios.put(`/api/posts/${id}`, {
         title,
         content,
-        category,
+        categoryId,
       })
       router.push('/')
       setTitle('')
       setContent('')
-      setCategory('')
+      setCategoryId('')
     } catch (error) {
       console.error(error)
     }
   }
+
+  useEffect(() => {
+    if (id) {
+      fetchPost(parseInt(id))
+      fetchCategories()
+    }
+  }, [id])
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-semibold mb-6">Edit Post ID: {id}</h1>
@@ -54,8 +66,9 @@ const Edit = ({ params }: { params: { id: string }}) => {
         setTitle={setTitle}
         content={content}
         setContent={setContent}
-        category={category}
-        setCategory={setCategory}
+        categoryId={categoryId}
+        setCategoryId={setCategoryId}
+        categories={categories}
         handleSubmit={handleSubmit}
         buttonText="Update"
       />

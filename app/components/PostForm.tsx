@@ -4,8 +4,9 @@ const PostForm = (
     setTitle,
     content,
     setContent,
-    category,
-    setCategory,
+    categoryId,
+    setCategoryId,
+    categories,
     handleSubmit,
     buttonText
   }
@@ -14,8 +15,9 @@ const PostForm = (
     setTitle: (title: string) => void,
     content: string,
     setContent: (content: string) => void,
-    category: string,
-    setCategory: (category: string) => void,
+    categoryId: string,
+    setCategoryId: (category: string) => void,
+    categories: any[],
     handleSubmit: (e: React.FormEvent) => void,
     buttonText: string
   }
@@ -59,13 +61,15 @@ const PostForm = (
         <div className="space-x-2">
           <label>Category</label>
           <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
+            value={categoryId}
+            onChange={(e) => setCategoryId(e.target.value)}
           >
             <option value="">Select a category</option>
-            {/* Example static categories, replace or populate dynamically */}
-            <option value="Tech">Tech</option>
-            <option value="Lifestyle">Lifestyle</option>
+            {categories.map((category: any) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
           </select>
         </div>
         <div></div>
