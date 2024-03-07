@@ -7,22 +7,33 @@ import ConfirmDeleteModal from '@/app/components/ConfirmDeleteModal'
 
 export default function Home() {
   const [posts, setPosts] = useState([])
+  const [categories, setCategories] = useState([])
   const [showModal, setShowModal] = useState(false)
   const [postId, setPostId] = useState(null)
 
   // states for search, category, and sort
   const [search, setSearch] = useState('')
-  const [category, setCategory] = useState('')
+  const [categoryId, setCategoryId] = useState('')
   const [sort, setSort] = useState('desc')
 
   const fetchPosts = async () => {
     try {
       // URLSearchParams is a built-in class to handle query strings from objects
-      const query = new URLSearchParams({ category, search, sort }).toString()
+      const query = new URLSearchParams({ categoryId, search, sort }).toString()
       const res = await axios.get(`/api/posts?${query}`)
       setPosts(res.data)
     } catch (error) {
       console.error(error)
+    }
+  }
+
+  // เพิ่มการดึง category ผ่าน API เพื่อใช้สำหรับ filter
+  const fetchCategories = async () => {
+    try {
+      const res = await axios.get('/api/categories')
+      setCategories(res.data)
+    } catch (error) {
+      console.error('Failed to fetch categories', error)
     }
   }
 
@@ -43,6 +54,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchPosts()
+    fetchCategories()
   }, [])
 
   return (
@@ -60,13 +72,16 @@ export default function Home() {
             className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
           <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
+            value={categoryId}
+            onChange={(e) => setCategoryId(e.target.value)}
             className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
             <option value="">Select Category</option>
-            <option value="Tech">Tech</option>
-            <option value="Lifestyle">Lifestyle</option>
+            {categories.map((category: any) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
           </select>
           <select
             value={sort}
@@ -118,7 +133,7 @@ export default function Home() {
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {post.category}
+                  {post.category.name}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <Link
@@ -129,7 +144,6 @@ export default function Home() {
                   </Link>
                   <button
                     onClick={() => {
-                      // deletePost(post.id)
                       setPostId(post.id)
                       setShowModal(true)
                     }}

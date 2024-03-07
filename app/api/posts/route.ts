@@ -10,11 +10,11 @@ export async function GET(request: NextRequest) {
   // searchParams คือ query string ที่ส่งมากับ request
   const searchParams = request.nextUrl.searchParams
   const search = searchParams.get('search') || ''
-  const category = searchParams.get('category') // หากไม่มี category จะไม่ใช้ค่านี้
+  const categoryId = searchParams.get('categoryId') // หากไม่มี category จะไม่ใช้ค่านี้
   const sort = searchParams.get('sort') || 'desc'
 
-  const whereCondition = category ? {
-    category: category,
+  const whereCondition = categoryId ? {
+    categoryId: Number(categoryId),
     title: {
       contains: search, // ค้นหา post ที่มี search เป็น substring ใน title
       mode: 'insensitive', // ไม่สนใจตัวเล็กตัวใหญ่
